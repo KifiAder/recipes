@@ -1,13 +1,9 @@
-let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-
 function getBasePath() {
-    const path = window.location.pathname;
-    if (path.includes('/pages/')) {
-        return '../';
-    } else {
-        return './';
-    }
+  const path = window.location.pathname;
+  return path.includes('/pages/') ? '../' : './';
 }
+
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
 
 // Функция для создания HTML-разметки рейтинга
