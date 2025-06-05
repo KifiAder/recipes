@@ -162,22 +162,25 @@ class RecipeForm {
 
             // Получаем текущие рецепты
             let recipes = [];
-            const savedRecipes = localStorage.getItem('recipes');
-            console.log('Текущие рецепты в localStorage:', savedRecipes);
+            const savedRecipesJSON = localStorage.getItem('recipes');
 
-            if (savedRecipes) {
+            if (savedRecipesJSON) {
+                // Если в хранилище что-то есть, используем это
+                recipes = JSON.parse(savedRecipesJSON);
+                if (!Array.isArray(recipes)) recipes = []; // Защита от испорченных данных
+            } else {
+                // ЕСЛИ ХРАНИЛИЩЕ ПУСТО, СНАЧАЛА ЗАГРУЖАЕМ ДЕМО-РЕЦЕПТЫ
+                console.log('Хранилище пусто, загружаем демо-данные перед добавлением нового...');
                 try {
-                    recipes = JSON.parse(savedRecipes);
-                    if (!Array.isArray(recipes)) {
-                        console.error('Сохраненные рецепты не являются массивом, создаем новый массив');
-                        recipes = [];
-                    }
+                    // Используем getBasePath для правильного пути к файлу
+                    const response = await fetch(`${getBasePath()}data/recipes.json`);
+                    recipes = await response.json();
                 } catch (e) {
-                    console.error('Ошибка при разборе JSON из localStorage:', e);
+                    console.error('Не удалось загрузить демо-рецепты:', e);
+                    // Если демо-рецепты не загрузились, начинаем с пустого списка
                     recipes = [];
                 }
             }
-
             const imageFile = recipeData.image;
 
             if (imageFile instanceof File && imageFile.size > 0) {
