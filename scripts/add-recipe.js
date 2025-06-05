@@ -172,10 +172,10 @@ class RecipeForm {
             // Обрабатываем изображение
             const imageFile = recipeData.image;
             if (imageFile instanceof File) {
-                recipeData.image = `assets/${imageFile.name}`;
+                recipeData.image = imageFile.name; 
             } else {
-                recipeData.image = 'assets/images/logo.svg';
-            }
+                recipeData.image = 'logo.svg';
+}
 
             // Проверяем обязательные поля
             if (!recipeData.name || !recipeData.type || !recipeData.ingredients.length || !recipeData.steps.length) {
