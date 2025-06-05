@@ -1,3 +1,12 @@
+function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
 class RecipeForm {
     constructor() {
         this.form = document.getElementById('add-recipe-form');
@@ -178,11 +187,24 @@ class RecipeForm {
 }
 
             // Проверяем обязательные поля
-            if (!recipeData.name || !recipeData.type || !recipeData.ingredients.length || !recipeData.steps.length) {
-                console.error('Не все обязательные поля заполнены:', recipeData);
-                return false;
+             const imageFile = recipeData.image;
+        if (imageFile instanceof File && imageFile.size > 0) {
+            try {
+                // Конвертируем файл в Base64 и заменяем им объект File
+                recipeData.image = await toBase64(imageFile); 
+            } catch (error) {
+                console.error('Ошибка при чтении файла изображения:', error);
+                alert('Не удалось обработать изображение.');
+                return false; // Прерываем сохранение, если файл не читается
             }
-
+        } else {
+            // Если файл не выбран, используем имя файла-заглушки
+            recipeData.image = 'logo.svg';
+        }
+        if (!recipeData.name || !recipeData.type || !recipeData.ingredients.length || !recipeData.steps.length) {
+            console.error('Не все обязательные поля заполнены:', recipeData);
+            return false;
+        }
             // Добавляем новый рецепт
             const newRecipe = {
                 ...recipeData,

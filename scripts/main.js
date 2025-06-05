@@ -34,7 +34,9 @@ function createRecipeCard(recipe) {
     }
 
     // Теперь эта строка будет работать правильно, потому что basePath существует
-    const imageUrl = basePath + 'assets/' + recipe.image; 
+    const imageUrl = recipe.image.startsWith('data:image') 
+        ? recipe.image // Если это Base64 (локальная картинка), используем как есть
+        : basePath + 'assets/' + recipe.image; // Иначе, это демо-картинка, строим путь
     
    card.innerHTML = `
         <button class="recipe-toggle ${isFavorite(recipe.id) ? 'active' : ''}" data-recipe-id="${recipe.id}" aria-label="${isFavorite(recipe.id) ? 'Удалить из избранного' : 'Добавить в избранное'}">
