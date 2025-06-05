@@ -14,7 +14,7 @@ class RecipeForm {
         this.stepsContainer = document.getElementById('steps-container');
         this.addIngredientButton = document.getElementById('add-ingredient');
         this.addStepButton = document.getElementById('add-step');
-        
+
         this.init();
     }
 
@@ -75,7 +75,7 @@ class RecipeForm {
         if (e.target.classList.contains('remove-ingredient')) {
             this.removeItem(e.target, '.ingredient-item', this.ingredientsContainer, 'ингредиент');
         }
-        
+
         if (e.target.classList.contains('remove-step')) {
             this.removeItem(e.target, '.step-item', this.stepsContainer, 'шаг приготовления');
         }
@@ -124,15 +124,15 @@ class RecipeForm {
 
         const recipeData = this.collectFormData();
         console.log('Собранные данные рецепта:', recipeData);
-        
+
         try {
             const saved = await this.saveRecipe(recipeData);
             if (saved) {
                 alert('Рецепт успешно добавлен!');
-                
+
                 // Очищаем форму
                 this.form.reset();
-                
+
                 // Очищаем контейнеры ингредиентов и шагов
                 while (this.ingredientsContainer.children.length > 1) {
                     this.ingredientsContainer.removeChild(this.ingredientsContainer.lastChild);
@@ -159,7 +159,7 @@ class RecipeForm {
     async saveRecipe(recipeData) {
         try {
             console.log('Начало сохранения рецепта...');
-            
+
             // Получаем текущие рецепты
             let recipes = [];
             const savedRecipes = localStorage.getItem('recipes');
@@ -178,40 +178,33 @@ class RecipeForm {
                 }
             }
 
-            // Обрабатываем изображение
             const imageFile = recipeData.image;
-            if (imageFile instanceof File) {
-                recipeData.image = imageFile.name; 
-            } else {
-                recipeData.image = 'logo.svg';
-}
 
-            // Проверяем обязательные поля
-             const imageFile = recipeData.image;
-        if (imageFile instanceof File && imageFile.size > 0) {
-            try {
-                // Конвертируем файл в Base64 и заменяем им объект File
-                recipeData.image = await toBase64(imageFile); 
-            } catch (error) {
-                console.error('Ошибка при чтении файла изображения:', error);
-                alert('Не удалось обработать изображение.');
-                return false; // Прерываем сохранение, если файл не читается
+            if (imageFile instanceof File && imageFile.size > 0) {
+                // Если это настоящий файл, конвертируем в Base64
+                try {
+                    recipeData.image = await toBase64(imageFile);
+                } catch (error) {
+                    console.error('Ошибка при чтении файла изображения:', error);
+                    alert('Не удалось обработать изображение.');
+                    return false;
+                }
+            } else {
+                // В противном случае, это либо не файл, либо пустой файл. Ставим заглушку.
+                recipeData.image = 'logo.svg';
             }
-        } else {
-            // Если файл не выбран, используем имя файла-заглушки
-            recipeData.image = 'logo.svg';
-        }
-        if (!recipeData.name || !recipeData.type || !recipeData.ingredients.length || !recipeData.steps.length) {
-            console.error('Не все обязательные поля заполнены:', recipeData);
-            return false;
-        }
+
+            if (!recipeData.name || !recipeData.type || !recipeData.ingredients.length || !recipeData.steps.length) {
+                console.error('Не все обязательные поля заполнены:', recipeData);
+                return false;
+            }
             // Добавляем новый рецепт
             const newRecipe = {
                 ...recipeData,
                 id: Date.now().toString(),
                 rating: this.generateRandomRating()
             };
-            
+
             recipes.push(newRecipe);
             console.log('Массив рецептов перед сохранением:', recipes);
 
