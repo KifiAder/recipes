@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта сайта - Cook's Manuscript</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* Стили специально для этой страницы для красивого отображения карты */
+        .sitemap-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .sitemap-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 2rem;
+        }
+        .sitemap-item {
+            margin-bottom: 1rem;
+        }
+        .sitemap-link {
+            display: block;
+            padding: 1rem 1.5rem;
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color, #E0E0E0);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-color, #333);
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .sitemap-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background-color: #fff;
+            border-color: var(--primary-color, #4CAF50);
+        }
+    </style>
+
+    <!-- Скрипты -->
+    <script src="components/header-component.js" defer></script>
+    <script src="components/footer-component.js" defer></script>
+    <script src="components/scroll-to-top.js" defer></script>
+</head>
+<body>
+    <header-component></header-component>
+
+    <main class="main-content">
+        <div class="sitemap-container">
+            <h1 class="section-title">Карта сайта</h1>
+            <ul class="sitemap-list">
+                <li class="sitemap-item">
+                    <a href="index.html" class="sitemap-link">Главная страница</a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="catalog.html" class="sitemap-link">Каталог рецептов</a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="favorite.html" class="sitemap-link">Избранные рецепты</a>
+                </li>
+                 <li class="sitemap-item">
+                    <a href="add-recipe.html" class="sitemap-link">Добавить свой рецепт</a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="about.html" class="sitemap-link">О нас</a>
+                </li>
+                <li class="sitemap-item">
+                    <a href="privacy.html" class="sitemap-link">Политика конфиденциальности</a>
+                </li>
+                 <li class="sitemap-item">
+                    <a href="sitemap.html" class="sitemap-link">Карта сайта</a>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <footer-component></footer-component>
+    <scroll-to-top></scroll-to-top>
+</body>
+</html>

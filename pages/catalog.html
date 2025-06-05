@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог - Cook's Manuscript</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="apple-touch-icon" href="assets/images/logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Скрипты -->
+    <script src="components/header-component.js" defer></script>
+    <script src="components/footer-component.js" defer></script>
+    <script src="components/recipe-widget.js" defer></script>
+    <script src="scripts/main.js" defer></script>
+</head>
+<body>
+    <header-component></header-component>
+
+    <main class="main-content">
+        <section class="catalog-section">
+            <h2 class="section-title">Каталог рецептов</h2>
+            
+        <div class="catalog-controls">
+            <div class="search-box">
+                <input type="text" id="recipe-search" placeholder="Поиск рецептов..." aria-label="Поиск рецептов">
+            </div>
+            
+            <div class="filter-box">
+                <select id="type-filter" aria-label="Фильтр по типу блюда">
+                    <option value="all">Все типы блюд</option>
+                    <option value="суп">Супы</option>
+                    <option value="салат">Салаты</option>
+                    <option value="горячее">Горячие блюда</option>
+                    <option value="закуска">Закуски</option>
+                    <option value="гарнир">Гарниры</option>
+                    <option value="выпечка">Выпечка</option>
+                    <option value="завтрак">Завтраки</option>
+                </select>
+            </div>
+            
+            <div class="filter-box">
+                <select id="rating-filter" aria-label="Фильтр по рейтингу">
+                    <option value="all">Все рейтинги</option>
+                    <option value="5">5 звезд</option>
+                    <option value="4">4 звезды и выше</option>
+                    <option value="3">3 звезды и выше</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="recipes-grid" id="catalog-recipes"></div>
+    </section>
+</main>
+
+<recipe-widget></recipe-widget>
+<footer-component></footer-component>
+</body>
+</html>
