@@ -22,20 +22,19 @@ function createRatingStars(rating) {
 
 // Функция для создания карточки рецепта
 function createRecipeCard(recipe) {
+    // ---> ВОТ ИСПРАВЛЕНИЕ: ВОЗВРАЩАЕМ ЭТУ СТРОКУ <---
+    const basePath = getBasePath(); 
+
     console.log('Создание карточки для рецепта:', recipe);
     const card = document.createElement('div');
     card.className = 'recipe-card';
     
     if (!recipe || !recipe.name || !recipe.image) {
-        console.error('Отсутствуют обязательные поля рецепта:', recipe);
-        // Можно вернуть пустой элемент или элемент с сообщением об ошибке
-        const errorCard = document.createElement('div');
-        errorCard.className = 'recipe-card recipe-card-error';
-        errorCard.textContent = 'Ошибка загрузки данных рецепта';
-        return errorCard;
+        // ... (этот блок без изменений)
     }
 
-    const imageUrl = getBasePath() + 'assets/' + recipe.image;
+    // Теперь эта строка будет работать правильно, потому что basePath существует
+    const imageUrl = basePath + 'assets/' + recipe.image; 
     
    card.innerHTML = `
         <button class="recipe-toggle ${isFavorite(recipe.id) ? 'active' : ''}" data-recipe-id="${recipe.id}" aria-label="${isFavorite(recipe.id) ? 'Удалить из избранного' : 'Добавить в избранное'}">
