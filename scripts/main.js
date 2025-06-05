@@ -39,10 +39,7 @@ function createRecipeCard(recipe) {
         return errorCard;
     }
 
-    const basePath = getBasePath(); // Используем getBasePath
-    const imageUrl = recipe.image.startsWith('..') || recipe.image.startsWith('./') || recipe.image.startsWith('http') 
-                     ? recipe.image 
-                     : `${basePath}assets/${recipe.image}`; // Более надежное формирование URL изображения
+    const imageUrl = getBasePath() + 'assets/' + recipe.image;
     
    card.innerHTML = `
         <button class="recipe-toggle ${isFavorite(recipe.id) ? 'active' : ''}" data-recipe-id="${recipe.id}" aria-label="${isFavorite(recipe.id) ? 'Удалить из избранного' : 'Добавить в избранное'}">
