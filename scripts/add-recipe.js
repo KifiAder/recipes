@@ -30,11 +30,9 @@ class RecipeForm {
             this.addStepButton.addEventListener('click', () => this.addStepField());
         }
         if (this.form) {
-            // Удаляем старые обработчики перед добавлением нового
             this.form.removeEventListener('submit', this.handleSubmit.bind(this));
             this.form.addEventListener('submit', this.handleSubmit.bind(this));
         }
-        // Удаляем старый обработчик перед добавлением нового
         document.removeEventListener('click', this.handleRemoveClick.bind(this));
         document.addEventListener('click', this.handleRemoveClick.bind(this));
     }
@@ -114,8 +112,6 @@ class RecipeForm {
         e.stopPropagation();
 
         console.log('Начало обработки отправки формы...');
-
-        // Проверяем наличие хотя бы одного шага
         const steps = this.stepsContainer.querySelectorAll('textarea[name="steps[]"]');
         if (steps.length === 0) {
             alert('Должен быть хотя бы один шаг приготовления!');
@@ -129,23 +125,15 @@ class RecipeForm {
             const saved = await this.saveRecipe(recipeData);
             if (saved) {
                 alert('Рецепт успешно добавлен!');
-
-                // Очищаем форму
                 this.form.reset();
-
-                // Очищаем контейнеры ингредиентов и шагов
                 while (this.ingredientsContainer.children.length > 1) {
                     this.ingredientsContainer.removeChild(this.ingredientsContainer.lastChild);
                 }
                 while (this.stepsContainer.children.length > 1) {
                     this.stepsContainer.removeChild(this.stepsContainer.lastChild);
                 }
-
-                // Очищаем значения оставшихся полей
                 const remainingInputs = this.form.querySelectorAll('input[type="text"], textarea');
                 remainingInputs.forEach(input => input.value = '');
-
-                // Перенаправляем на страницу каталога
                 window.location.href = 'catalog.html';
             } else {
                 alert('Произошла ошибка при сохранении рецепта. Попробуйте еще раз.');
@@ -165,26 +153,21 @@ class RecipeForm {
             const savedRecipesJSON = localStorage.getItem('recipes');
 
             if (savedRecipesJSON) {
-                // Если в хранилище что-то есть, используем это
                 recipes = JSON.parse(savedRecipesJSON);
-                if (!Array.isArray(recipes)) recipes = []; // Защита от испорченных данных
+                if (!Array.isArray(recipes)) recipes = [];
             } else {
-                // ЕСЛИ ХРАНИЛИЩЕ ПУСТО, СНАЧАЛА ЗАГРУЖАЕМ ДЕМО-РЕЦЕПТЫ
                 console.log('Хранилище пусто, загружаем демо-данные перед добавлением нового...');
                 try {
-                    // Используем getBasePath для правильного пути к файлу
                     const response = await fetch(`${getBasePath()}data/recipes.json`);
                     recipes = await response.json();
                 } catch (e) {
                     console.error('Не удалось загрузить демо-рецепты:', e);
-                    // Если демо-рецепты не загрузились, начинаем с пустого списка
                     recipes = [];
                 }
             }
             const imageFile = recipeData.image;
 
             if (imageFile instanceof File && imageFile.size > 0) {
-                // Если это настоящий файл, конвертируем в Base64
                 try {
                     recipeData.image = await toBase64(imageFile);
                 } catch (error) {
@@ -210,13 +193,9 @@ class RecipeForm {
 
             recipes.push(newRecipe);
             console.log('Массив рецептов перед сохранением:', recipes);
-
-            // Сохраняем обновленный список
             const recipesJSON = JSON.stringify(recipes);
             localStorage.setItem('recipes', recipesJSON);
             console.log('Рецепты успешно сохранены в localStorage');
-
-            // Проверяем, что данные действительно сохранились
             const savedData = localStorage.getItem('recipes');
             console.log('Проверка сохраненных данных:', savedData);
 

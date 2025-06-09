@@ -8,7 +8,6 @@ class RecipeWidget extends HTMLElement {
 
     connectedCallback() {
         this.render();
-        // Event listeners теперь настраиваются внутри render, после того как контент создан
     }
 
     // --- Логика работы с данными ---
@@ -35,8 +34,6 @@ class RecipeWidget extends HTMLElement {
         const recipe = allRecipes.find(r => r.id === recipeId);
 
         if (!recipe) return;
-
-        // Убедимся, что у рецепта есть массив для отзывов
         if (!recipe.reviews) {
             recipe.reviews = [];
         }
@@ -57,7 +54,7 @@ class RecipeWidget extends HTMLElement {
             this.favorites.splice(index, 1);
         }
         localStorage.setItem('favorites', JSON.stringify(this.favorites));
-        this.render(); // Перерисовываем виджет, чтобы обновить кнопку
+        this.render();
     }
 
     isFavorite() {
@@ -115,7 +112,7 @@ class RecipeWidget extends HTMLElement {
     // --- Вспомогательные функции и рендеринг ---
 
     setupEventListeners() {
-        if (!this.isOpen) return; // Не навешивать слушатели, если виджет закрыт
+        if (!this.isOpen) return;
 
         const closeButton = this.shadowRoot.querySelector('.close-button');
         const overlay = this.shadowRoot.querySelector('.overlay');
@@ -156,7 +153,6 @@ class RecipeWidget extends HTMLElement {
 
     render() {
         const styles = `
-            /* ... все ваши существующие стили для виджета ... */
             .overlay { display: ${this.isOpen ? 'flex' : 'none'}; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
             .widget { background: white; border-radius: 8px; padding: 20px; max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
             .close-button { position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; cursor: pointer; padding: 5px; color: #333; line-height: 1; }
@@ -196,7 +192,7 @@ class RecipeWidget extends HTMLElement {
                 border: 1px solid #ccc;
                 border-radius: 4px;
                 font-size: 1rem;
-                box-sizing: border-box; /* Важно для правильного padding */
+                box-sizing: border-box;
             }
             #review-form button {
                 background-color: var(--text-color, #333);
@@ -274,7 +270,7 @@ class RecipeWidget extends HTMLElement {
         ` : '';
 
         this.shadowRoot.innerHTML = `<style>${styles}</style>${content}`;
-        this.setupEventListeners(); // Переносим вызов сюда, чтобы слушатели навешивались на актуальный DOM
+        this.setupEventListeners();
     }
 }
 

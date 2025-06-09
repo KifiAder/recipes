@@ -381,12 +381,12 @@ p {
 
 /* Стили для режима доступности */
 .accessibility-mode {
-    --background-color: #ffffff !important; /* Фон остается белым (или принудительно белый) */
-    --text-color: #000000 !important;       /* Текст становится черным */
+    --background-color: #ffffff !important;
+    --text-color: #000000 !important;
     
-    --border-color: #000000 !important;     /* Границы тоже можно сделать черными для контраста */
-    --primary-color: #555555 !important;    /* Основной акцентный цвет, если нужен (например, для ссылок) */
-    --secondary-color: #333333 !important; /* Второстепенный акцентный цвет */
+    --border-color: #000000 !important;
+    --primary-color: #555555 !important;
+    --secondary-color: #333333 !important;
 
     --font-size-base: 20px;
     --line-height-base: 1.8;
@@ -399,15 +399,10 @@ p {
 
 /* Исправляем стили шапки в режиме доступности */
 .accessibility-mode header-component {
-    --header-bg-color: #000000 !important;       /* Фон шапки станет черным */
-    --header-text-color: #ffffff !important;      /* Текст в шапке станет белым */
-    
-    /* Акцентные цвета для кнопок в шапке в режиме доступности */
-    /* Можно сделать их просто серыми для контраста или оставить как есть, если контраст достаточен */
-    --header-accent-color: #555555 !important;   /* Серый для кнопок */
-    --header-accent-text-color: #ffffff !important; /* Белый текст на серых кнопках */
-    
-    /* Ховер фон в режиме доступности для шапки, если нужно изменить */
+    --header-bg-color: #000000 !important;
+    --header-text-color: #ffffff !important;
+    --header-accent-color: #555555 !important;
+    --header-accent-text-color: #ffffff !important;
     --header-hover-bg-color: rgba(255, 255, 255, 0.15) !important;
 }
 
@@ -460,7 +455,6 @@ p {
 ) {
     color: var(--text-color) !important;
     background-color: var(--background-color);
-    /* Увеличиваем контрастность всех элементов */
     color: var(--text-color) !important;
     background-color: var(--background-color);
     font-weight: 500;
@@ -470,7 +464,6 @@ p {
 }
 
 .accessibility-mode a:not(.nav-link, .logo) {
-    /* Подчеркиваем все ссылки для лучшей различимости */
     text-decoration: underline !important;
     text-underline-offset: 2px;
 }
@@ -478,14 +471,12 @@ p {
 .accessibility-mode button:not(.accessibility-toggle, .add-recipe-btn),
 .accessibility-mode input,
 .accessibility-mode select {
-    /* Увеличиваем размер интерактивных элементов */
     min-height: 44px;
     min-width: 44px;
     padding: 10px 20px;
 }
 
 .accessibility-mode img:not(.logo-image) {
-    /* Увеличиваем контрастность изображений */
     filter: contrast(1.2);
 }
 
@@ -680,7 +671,6 @@ p {
     line-height: 1.8;
 }
 
-/* Увеличенные интерактивные элементы */
 button,
 .nav-link,
 input,
@@ -1036,8 +1026,6 @@ a:focus {
 
 .recipes-grid {
     display: grid;
-    /* Создает колонки, которые автоматически подстраиваются под ширину экрана.
-       Каждая колонка будет минимум 300px, но может растягиваться, чтобы заполнить место. */
     grid-template-columns: repeat(auto-fit, 300px);
     gap: 2rem;
     justify-content: center;
@@ -1059,9 +1047,7 @@ a:focus {
     display: flex;
     flex-direction: column;
     min-height: 400px;
-    max-width: 300px; /* Ограничиваем максимальную ширину карточки */
-                      /* Подберите это значение так, чтобы оно хорошо смотрелось 
-                         и было не меньше min в minmax() грида */
+    max-width: 300px;
 }
 
 .recipe-toggle {

@@ -22,7 +22,6 @@ function createRatingStars(rating) {
 
 // Функция для создания карточки рецепта
 function createRecipeCard(recipe) {
-    // ---> ВОТ ИСПРАВЛЕНИЕ: ВОЗВРАЩАЕМ ЭТУ СТРОКУ <---
     const basePath = getBasePath(); 
 
     console.log('Создание карточки для рецепта:', recipe);
@@ -30,10 +29,7 @@ function createRecipeCard(recipe) {
     card.className = 'recipe-card';
     
     if (!recipe || !recipe.name || !recipe.image) {
-        // ... (этот блок без изменений)
     }
-
-    // Теперь эта строка будет работать правильно, потому что basePath существует
     const imageUrl = recipe.image.startsWith('data:image') 
         ? recipe.image // Если это Base64 (локальная картинка), используем как есть
         : basePath + 'assets/' + recipe.image; // Иначе, это демо-картинка, строим путь
@@ -139,8 +135,6 @@ function generateRecipeCards(containerId, recipes) {
         const card = createRecipeCard(recipe);
         container.appendChild(card);
     });
-
-    // Добавляем обработчики для кнопок
     const toggleButtons = container.querySelectorAll('.recipe-toggle');
     toggleButtons.forEach(button => {
         button.addEventListener('click', (e) => {
@@ -258,13 +252,11 @@ function toggleFavorite(event, recipeId, button) {
     const index = favorites.indexOf(recipeId);
     
     if (index === -1) {
-        // Добавляем в избранное
         favorites.push(recipeId);
         button.classList.add('active');
         button.innerHTML = '×'; // <-- ДОБАВЛЕНО
         button.setAttribute('aria-label', 'Удалить из избранного');
     } else {
-        // Удаляем из избранного
         favorites.splice(index, 1);
         button.classList.remove('active');
         button.innerHTML = '+'; // <-- ДОБАВЛЕНО
@@ -366,14 +358,11 @@ async function showBestRecipes() {
     try {
         const recipes = await loadRecipes();
         if (recipes && recipes.length > 0) {
-            // Отбираем 5 лучших рецептов по рейтингу
             const bestRecipes = recipes
                 .sort((a, b) => b.rating - a.rating)
                 .slice(0, 5);
             
             generateRecipeCards('best-recipes', bestRecipes);
-            
-            // Отображаем популярные рецепты (можно использовать другую логику сортировки)
             const popularRecipes = recipes
                 .sort(() => Math.random() - 0.5)
                 .slice(0, 5);
@@ -390,8 +379,6 @@ function clearAllRecipes() {
     try {
         localStorage.clear();
         console.log('Локальное хранилище очищено');
-        
-        // Перезагружаем страницу для обновления отображения
         window.location.reload();
     } catch (error) {
         console.error('Ошибка при очистке хранилища:', error);
@@ -400,14 +387,11 @@ function clearAllRecipes() {
 }
 
 function addClearButton(container) {
-    // Проверяем, нет ли уже кнопки очистки
     if (!container.querySelector('.clear-recipes')) {
         const clearButton = document.createElement('button');
         clearButton.className = 'button clear-recipes';
         clearButton.textContent = 'Очистить все рецепты';
         clearButton.onclick = clearAllRecipes;
-        
-        // Добавляем кнопку перед контейнером
         container.parentElement.insertBefore(clearButton, container);
     }
 }
