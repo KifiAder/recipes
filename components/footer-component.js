@@ -3,7 +3,17 @@ class FooterComponent extends HTMLElement {
         super();
     }
 
+    getBasePath() {
+        if (window.location.pathname.includes('/pages/')) {
+            return '../';
+        }
+        return './';
+    }
+
     connectedCallback() {
+        // Получаем правильный базовый путь
+        const basePath = this.getBasePath();
+
         this.innerHTML = `
             <style>
                 .footer-container {
@@ -63,9 +73,9 @@ class FooterComponent extends HTMLElement {
                     </a>
                 </div>
 
-                <!-- Блок 2: Копирайт и политика -->
+                <!-- Блок 2: Копирайт и политика (ИЗМЕНЕНЫ ПУТИ) -->
                 <div class="copyright-text">
-                    © 2025 | <a href="pages/privacy.html">Политика конфиденциальности</a> | <a href="pages/sitemap.html">Карта сайта</a>
+                    © 2025 | <a href="${basePath}pages/privacy.html">Политика конфиденциальности</a> | <a href="${basePath}pages/sitemap.html">Карта сайта</a>
                 </div>
                 
                 <!-- Блок 3: Счетчик -->
