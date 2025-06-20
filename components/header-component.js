@@ -8,6 +8,7 @@ class HeaderComponent extends HTMLElement {
         this.setupUserCounter();
     }
 
+    // ... методы startClock, updateClock, getBasePath без изменений ...
     startClock() {
         this.updateClock();
         this.clockIntervalId = setInterval(() => this.updateClock(), 1000);
@@ -43,9 +44,7 @@ class HeaderComponent extends HTMLElement {
             }
             .header {
                 position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
+                top: 0; left: 0; right: 0;
                 height: 60px;
                 background-color: var(--header-bg-color);
                 display: flex;
@@ -55,15 +54,13 @@ class HeaderComponent extends HTMLElement {
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 z-index: 1000;
             }
-            .logo-container {
+            .logo {
                 display: flex;
                 align-items: center;
                 gap: 1rem;
+                text-decoration: none;
             }
-            .logo-image {
-                width: 40px;
-                height: 40px;
-            }
+            .logo-image { width: 40px; height: 40px; }
             .logo-text {
                 color: var(--header-text-color);
                 font-size: 1.5rem;
@@ -74,10 +71,7 @@ class HeaderComponent extends HTMLElement {
                 align-items: center;
                 gap: 2rem;
             }
-            .nav {
-                display: flex;
-                gap: 1rem;
-            }
+            .nav { display: flex; gap: 1rem; }
             .nav-link {
                 color: var(--header-text-color);
                 text-decoration: none;
@@ -96,49 +90,56 @@ class HeaderComponent extends HTMLElement {
                 align-items: center;
                 gap: 1rem;
             }
-                .user-count {
-                    background-color: var(--header-accent-color); 
-                    color: var(--header-accent-text-color); 
-                    padding: 0.25rem 0.75rem;
-                    border-radius: 1rem;
-                    font-size: 0.9rem;
-                    font-weight: bold;
-                    min-width: 2rem;
-                    text-align: center;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-
-                .user-count::before {
-                    content: '👥';
-                    margin-right: 0.5rem;
-                    line-height: 1;
-                }
-
-                .add-recipe-btn {
-                    background-color: var(--header-accent-color); 
-                    color: var(--header-accent-text-color); 
-                    border: none;
-                    padding: 0.5rem 1rem;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    transition: background-color 0.2s ease;
-                    display: inline-flex;
-                    align-items: center;
-                    line-height: 1;
-                }
-
-            .add-recipe-btn:hover {
-                filter: brightness(110%);
+            .user-count {
+                background-color: var(--header-accent-color);
+                color: var(--header-accent-text-color);
+                padding: 0.25rem 0.75rem;
+                border-radius: 1rem;
+                font-size: 0.9rem;
+                font-weight: bold;
+                display: inline-flex;
+                align-items: center;
+            }
+            .user-count::before { content: '👥'; margin-right: 0.5rem; }
+            .add-recipe-btn {
+                background-color: var(--header-accent-color);
+                color: var(--header-accent-text-color);
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+            }
+            .desktop-controls {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+            .clock { color: var(--header-text-color); font-weight: bold; }
+            .accessibility-toggle {
+                background: none;
+                border: 2px solid var(--header-text-color);
+                color: var(--header-text-color);
+                border-radius: 4px;
+                cursor: pointer;
+                padding: 0.5rem;
+                display: flex;
+                align-items: center;
+            }
+            .accessibility-toggle[aria-pressed="true"] {
+                background-color: var(--header-text-color);
+                color: var(--header-bg-color);
             }
 
-            /* --- СТИЛИ ДЛЯ МОБИЛЬНОГО МЕНЮ --- */
+            /* --- ИЗМЕНЕНИЕ: Мобильная кнопка по умолчанию скрыта --- */
+            .accessibility-toggle-mobile {
+                display: none;
+            }
+
             .menu-toggle {
                 display: none;
-                background: none;
-                border: none;
-                cursor: pointer;
+                background: none; border: none; cursor: pointer;
                 padding: 0.5rem;
                 z-index: 1001;
             }
@@ -148,48 +149,51 @@ class HeaderComponent extends HTMLElement {
                 height: 3px;
                 background-color: var(--header-text-color);
                 margin: 5px 0;
-                transition: all 0.3s ease;
             }
-            
-            /* Стили для мобильной версии */
-            @media (max-width: 900px)
-                .header {
-                    padding: 0 1rem;
-                }
-                .nav-container {
+
+            @media (max-width: 900px) {
+                /* Скрываем навигацию и десктопные контролы */
+                .nav-container, .desktop-controls {
                     display: none;
+                }
+                /* Показываем кнопку-бургер */
+                .menu-toggle {
+                    display: block;
+                }
+                /* Стили для открытого мобильного меню */
+                .nav-container.is-open {
+                    display: flex;
                     position: absolute;
-                    top: 60px;
-                    left: 0;
-                    right: 0;
+                    top: 60px; left: 0; right: 0;
                     background-color: var(--header-bg-color);
                     flex-direction: column;
                     padding: 1rem;
                     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
                 }
-                .nav-container.is-open {
-                    display: flex;
-                }
-                .nav {
+                .nav-container.is-open .nav {
                     flex-direction: column;
                     gap: 1rem;
                     width: 100%;
                 }
-                .user-actions {
+                .nav-container.is-open .user-actions {
                     margin-top: 1rem;
                     padding-top: 1rem;
                     border-top: 1px solid rgba(255, 255, 255, 0.2);
                     width: 100%;
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+                /* --- ИЗМЕНЕНИЕ: Показываем мобильную кнопку внутри открытого меню --- */
+                .nav-container.is-open .accessibility-toggle-mobile {
+                    display: flex;
+                    width: 100%;
                     justify-content: center;
-                }
-                .menu-toggle {
-                    display: block;
-                }
-                .accessibility-controls {
-                    display: none;
+                    padding: 0.75rem;
+                    margin-top: 0.5rem;
                 }
             }
-                </style>
+        </style>
+
         <header class="header">
             <a href="${basePath}index.html" class="logo">
                 <img src="${basePath}assets/images/logo.svg" alt="Логотип" class="logo-image">
@@ -203,13 +207,17 @@ class HeaderComponent extends HTMLElement {
                     <a href="${basePath}pages/about.html" class="nav-link"><span>ℹ️</span><span>О нас</span></a>
                     <a href="${basePath}pages/favorite.html" class="nav-link"><span>❤️</span><span>Избранное</span></a>
                 </nav>
+                <!-- --- ИЗМЕНЕНИЕ: Мобильная кнопка теперь ВНУТРИ user-actions --- -->
                 <div class="user-actions">
                     <span class="user-count">${this.activeUsers}</span>
                     <button class="add-recipe-btn"><span>📝</span> Добавить свой рецепт</button>
+                    <button class="accessibility-toggle accessibility-toggle-mobile" aria-pressed="${this.isAccessibilityMode.toString()}">
+                        <span>👁️</span> Версия для слабовидящих
+                    </button>
                 </div>
             </div>
 
-            <div class="accessibility-controls">
+            <div class="desktop-controls">
                 <div class="clock"></div>
                 <button class="accessibility-toggle" aria-pressed="${this.isAccessibilityMode.toString()}">
                     <span>👁️</span>
@@ -230,11 +238,13 @@ class HeaderComponent extends HTMLElement {
         this.startClock();
         this.setupEventListeners();
     }
+    
+    // setupEventListeners и остальные методы остаются без изменений,
+    // так как они уже ищут все кнопки с классом .accessibility-toggle
     setupEventListeners() {
         const menuToggle = this.shadowRoot.querySelector('.menu-toggle');
         const navContainer = this.shadowRoot.querySelector('.nav-container');
 
-        // Обработчик для меню-гамбургера
         if (menuToggle && navContainer) {
             menuToggle.addEventListener('click', () => {
                 const isOpen = navContainer.classList.toggle('is-open');
@@ -242,23 +252,23 @@ class HeaderComponent extends HTMLElement {
             });
         }
 
-        // Обработчик для кнопки доступности
-        const accessibilityToggle = this.shadowRoot.querySelector('.accessibility-toggle');
-        if (accessibilityToggle) {
-            accessibilityToggle.addEventListener('click', () => {
-                this.isAccessibilityMode = !this.isAccessibilityMode;
-                accessibilityToggle.setAttribute('aria-pressed', this.isAccessibilityMode.toString());
-
-                if (this.isAccessibilityMode) {
-                    document.documentElement.classList.add('accessibility-mode');
-                } else {
-                    document.documentElement.classList.remove('accessibility-mode');
-                }
-                localStorage.setItem('accessibilityMode', this.isAccessibilityMode.toString());
+        const accessibilityToggles = this.shadowRoot.querySelectorAll('.accessibility-toggle');
+        
+        const toggleAccessibility = () => {
+            this.isAccessibilityMode = !this.isAccessibilityMode;
+            
+            accessibilityToggles.forEach(btn => {
+                btn.setAttribute('aria-pressed', this.isAccessibilityMode.toString());
             });
-        }
 
-        // Обработчик для кнопки "Добавить рецепт"
+            document.documentElement.classList.toggle('accessibility-mode', this.isAccessibilityMode);
+            localStorage.setItem('accessibilityMode', this.isAccessibilityMode.toString());
+        };
+
+        accessibilityToggles.forEach(button => {
+            button.addEventListener('click', toggleAccessibility);
+        });
+
         const addRecipeBtn = this.shadowRoot.querySelector('.add-recipe-btn');
         if (addRecipeBtn) {
             addRecipeBtn.addEventListener('click', () => {
@@ -266,23 +276,17 @@ class HeaderComponent extends HTMLElement {
                 window.location.href = `${basePath}pages/add-recipe.html`;
             });
         }
-
         this.updateActiveLink();
     }
+    
+    // ... остальной JS-код без изменений ...
     updateActiveLink() {
-        ;
         const currentPath = window.location.pathname;
         const links = this.shadowRoot.querySelectorAll('.nav-link');
-        const basePath = this.getBasePath();
-
         links.forEach(link => {
             link.classList.remove('active');
-            // Нормализуем href для сравнения (убираем возможные './' или '../')
             const linkHref = new URL(link.getAttribute('href'), document.baseURI).pathname;
-            const targetPath = new URL(basePath + link.getAttribute('href').replace(/^\.\//, ''), document.baseURI).pathname;
-
-            // Более точное сравнение путей
-            if (currentPath === linkHref || currentPath === targetPath || (currentPath === '/' && (linkHref === '/index.html' || targetPath === '/index.html'))) {
+            if (linkHref === currentPath || (currentPath.endsWith('/') && linkHref.includes('index.html'))) {
                 link.classList.add('active');
             }
         });
@@ -297,7 +301,6 @@ class HeaderComponent extends HTMLElement {
         this.sessionId = Math.random().toString(36).substring(2, 15);
         this.registerUser();
 
-        // Сохраняем ID интервала, чтобы его можно было очистить
         this.userCountIntervalId = setInterval(() => this.updateUserCount(), 30000);
 
         window.addEventListener('beforeunload', () => {
@@ -343,7 +346,6 @@ class HeaderComponent extends HTMLElement {
         }
     }
 
-    // Добавляем disconnectedCallback для очистки интервалов
     disconnectedCallback() {
         if (this.clockIntervalId) {
             clearInterval(this.clockIntervalId);

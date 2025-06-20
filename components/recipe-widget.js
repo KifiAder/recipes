@@ -106,8 +106,16 @@ class RecipeWidget extends HTMLElement {
             });
 
         }
+        
     }
 
+    _calculateAverageRating(recipe) {
+        if (!recipe || !recipe.reviews || recipe.reviews.length === 0) {
+            return 0;
+        }
+        const totalRating = recipe.reviews.reduce((sum, review) => sum + review.rating, 0);
+        return Math.round(totalRating / recipe.reviews.length);
+    }
 
     // --- Вспомогательные функции и рендеринг ---
 
@@ -213,7 +221,7 @@ class RecipeWidget extends HTMLElement {
                     <button class="close-button" aria-label="Закрыть">×</button>
                     <img src="${this.recipe.image}" alt="${this.recipe.name}" class="recipe-image">
                     <h2 class="recipe-title">${this.recipe.name}</h2>
-                    <div class="recipe-rating">${this.createRatingStars(this.recipe.rating)}</div>
+                    <div class="recipe-rating">${this.createRatingStars(this._calculateAverageRating(this.recipe))}</div>
                     
                     <button class="favorite-button ${this.isFavorite() ? 'active' : ''}">
                         ${this.isFavorite() ? 'Убрать из избранного' : 'Добавить в избранное'}

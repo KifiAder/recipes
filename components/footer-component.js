@@ -6,17 +6,17 @@ class FooterComponent extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `
             <style>
-                .footer-container { /* Используем новое имя класса, чтобы точно избежать конфликтов */
+                .footer-container {
                     background-color: #333;
                     color: #fff;
                     text-align: center;
                     padding: 1.5em 1em;
                     width: 100%;
                     display: flex;
-                    flex-direction: column; /* Располагаем элементы в колонку */
-                    align-items: center; /* Центрируем по горизонтали */
-                    gap: 15px; /* Расстояние между блоками */
-                    margin-top: auto; /* Прижимает футер к низу, если контента мало */
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 15px;
+                    margin-top: auto;
                 }
 
                 .footer-container a {
@@ -25,7 +25,6 @@ class FooterComponent extends HTMLElement {
                     transition: color 0.2s ease, transform 0.2s ease;
                 }
 
-                /* Используйте ваш --primary-color или любой другой цвет */
                 .footer-container a:hover {
                     color: #4CAF50; 
                 }
@@ -37,11 +36,11 @@ class FooterComponent extends HTMLElement {
                 }
                 
                 .social-links a i {
-                    font-size: 1.8rem; /* Размер иконок */
+                    font-size: 1.8rem;
                 }
 
                 .social-links a:hover {
-                    transform: scale(1.15); /* Эффект увеличения при наведении */
+                    transform: scale(1.15);
                 }
 
                 .copyright-text {

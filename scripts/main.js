@@ -5,6 +5,14 @@ function getBasePath() {
 
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
+function calculateAverageRating(recipe) {
+    if (!recipe.reviews || recipe.reviews.length === 0) {
+        return 0;
+    }
+    const totalRating = recipe.reviews.reduce((sum, review) => sum + review.rating, 0);
+    const average = Math.round(totalRating / recipe.reviews.length);
+    return average;
+}
 
 // Функция для создания HTML-разметки рейтинга
 function createRatingStars(rating) {
@@ -43,7 +51,7 @@ function createRecipeCard(recipe) {
             <h3 class="recipe-title">${recipe.name}</h3>
             <div class="recipe-info">
                 <span class="recipe-type">${recipe.type || 'Не указан'}</span>
-                <div class="recipe-rating">${createRatingStars(recipe.rating || 0)}</div>
+                <div class="recipe-rating">${createRatingStars(calculateAverageRating(recipe))}</div>
             </div>
             <button class="recipe-button view-recipe" data-id="${recipe.id}">
                 Посмотреть рецепт
@@ -311,7 +319,8 @@ function filterRecipes(recipes) {
     return recipes.filter(recipe => {
         const matchesSearch = recipe.name.toLowerCase().includes(currentSearchQuery.toLowerCase());
         const matchesType = currentTypeFilter === 'all' || recipe.type.toLowerCase() === currentTypeFilter.toLowerCase();
-        const matchesRating = currentRatingFilter === 'all' || recipe.rating >= parseInt(currentRatingFilter);
+        const averageRating = calculateAverageRating(recipe);
+        const matchesRating = currentRatingFilter === 'all' || averageRating >= parseInt(currentRatingFilter);
         return matchesSearch && matchesType && matchesRating;
     });
 }
@@ -359,7 +368,7 @@ async function showBestRecipes() {
         const recipes = await loadRecipes();
         if (recipes && recipes.length > 0) {
             const bestRecipes = recipes
-                .sort((a, b) => b.rating - a.rating)
+                .sort((a, b) => calculateAverageRating(b) - calculateAverageRating(a))
                 .slice(0, 5);
             
             generateRecipeCards('best-recipes', bestRecipes);
@@ -405,7 +414,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Логика для разных страниц
         if (path.endsWith('index.html') || path === '/' || path.endsWith('Cooks-Manuscript/')) {
-            const bestRecipes = [...allRecipes].sort((a, b) => b.rating - a.rating).slice(0, 5);
+            const bestRecipes = [...allRecipes].sort((a, b) => calculateAverageRating(b) - calculateAverageRating(a)).slice(0, 5);
             generateRecipeCards('best-recipes', bestRecipes);
             
             const popularRecipes = [...allRecipes].sort(() => Math.random() - 0.5).slice(0, 5);
